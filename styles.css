@@ -1,0 +1,110 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: hand;
+  src: url(./fonts/PatrickHandSC-Regular.ttf);
+}
+
+.logo {
+  height: 150px;
+}
+
+body {
+  background-color: #f1f5f9;
+}
+
+.header {
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: hand;
+  font-size: 1.2rem;
+}
+
+.header-container {
+  width: min(100vw, 1200px);
+  display: flex;
+  align-items: center;
+}
+
+.log {
+  margin-left: auto;
+  width: 250px;
+  height: 80%;
+  padding: 0px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 2px 10px;
+  border-radius: 10px;
+}
+
+h1 {
+  font-size: 2.8rem;
+}
+
+h3 {
+  align-self: center;
+}
+
+.log-container {
+  display: grid;
+  grid-template-columns: 5fr 0.1fr;
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.legend {
+  display: flex;
+  width: min(100vw, 1200px);
+  display: flex;
+  justify-content: flex-end;
+  gap: 25px;
+}
+
+.read-color,
+.not-read-color {
+  width: 60px;
+  height: 30px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.read-container,
+.not-read-container {
+  display: flex;
+  gap: 3px;
+}
+
+.read-color {
+  background-image: linear-gradient(to right, #134e5e, #71b280);
+}
+
+.not-read-color {
+  background-image: linear-gradient(to right, #304352, #d7d2cc);
+}
+
+.add-book {
+  margin-right: auto;
+}
+
+.add-book button {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  font-size: 2rem;
+  background-color: #7dd3fc;
+  border: none;
+  box-shadow: 1px 1px 10px;
+  color: #f9fafb;
+  cursor: pointer;
+  margin: -10px 0px 0px 15px 
+}
+
+.add-book button:active {
+  transform: scale(95%);
+}
