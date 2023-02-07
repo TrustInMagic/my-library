@@ -39,5 +39,25 @@
         </div>
       </div>
     </div>
+    <form action="/" method="GET">
+      <h3>Add New Book</h3>
+      <div class="book-title">
+        <input type="text" id="book-title" name="book-title" placeholder="Title">
+      </div>
+      <div class="book-author">
+        <input type="text" id="book-author" name="book-author" placeholder="Author">
+      </div>
+      <div class="page-number">
+        <input type="number" id="page-number" name="page-number" placeholder="Pages">
+      </div>
+      <div class="language">
+        <input type="text" id="language" name="book-language" placeholder="Language">
+      </div>
+      <div class="status">
+        <label for="status">Have you read it?</label>
+        <input type="checkbox" id="status" name="book-status">
+      </div>
+      <button type="submit">Submit</button>
+    </form>
   </body>
 </html>
