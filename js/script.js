@@ -15,13 +15,86 @@ const formCloseButton = document.querySelector('.close-button');
 const form = document.querySelector('form');
 const inputs = document.querySelectorAll('[type="text"], [type="number"]');
 const checkbox = document.querySelector('[type="checkbox"]');
-const bookContainer = document.querySelector('.book-container')
+const bookContainer = document.querySelector('.book-container');
 
 // function that builds HTML elements
 function elementFromHtml(html) {
   const template = document.createElement('template');
   template.innerHTML = html.trim();
   return template.content;
+}
+
+function addBookDomElement(e) {
+  e.preventDefault();
+  const bookDetails = [];
+
+  // turns the nodeList into an array and adds the values to bookDetails
+  [...inputs].forEach((input) => {
+    bookDetails.push(input.value);
+  });
+  // adds the value of the checkbox to bookDetails
+  // I am using markRead variable to add checked or unchecked status on the toggle switch from the book DOM element (read/not read)
+  // I am using readStatusColor variable to toggle the background color of the book DOM element
+  let markRead;
+  let readStatusColor;
+  if (checkbox.checked === true) {
+    bookDetails.push(true);
+    markRead = 'checked="true"';
+    readStatusColor =
+      'background-image: linear-gradient(to right, #134e5e, #71b280)';
+  } else {
+    bookDetails.push(false);
+    markRead = '';
+    readStatusColor =
+      'background-image: linear-gradient(to right, #304352, #d7d2cc)';
+  }
+  // makes new Book object and adds to myLibrary
+  myLibrary.push(new Book(...bookDetails));
+  const myBook = new Book(...bookDetails);
+  // resets form
+  form.reset();
+  header.style = 'filter: blur(0px)';
+  formContainer.style.cssText = 'display: none';
+  // adds the book element to the DOM
+  const graphicBook = elementFromHtml(`
+     <div class="card-container" style='${readStatusColor}'>
+        <button class="close-button">✖</button>
+        <h4>${myBook.title}</h4>
+        <div class="author">By: ${myBook.author}</div>
+        <div class="pages">Number of pages: ${myBook.pages}</div>
+        <div class="language">Language: ${myBook.language}</div>
+        <div class="input-container">
+          <div>Mark as read: </div>
+          <input type="checkbox" id="switch${myLibrary.length}" ${markRead}/>
+          <label for="switch${myLibrary.length}"></label>
+        </div>
+      </div>
+  `);
+
+  bookContainer.insertBefore(graphicBook, bookContainer.firstChild);
+
+  const cardCloseButton = document.querySelector('.card-container button');
+  cardCloseButton.addEventListener('click', () => {
+    bookContainer.removeChild(bookContainer.firstElementChild);
+    myLibrary.pop();
+  });
+
+  const cardContainer = document.querySelector('.card-container');
+  const readToggle = document.querySelector('.card-container input');
+  readToggle.addEventListener('click', () => {
+    // changes to color of the book DOM element corresponding to the 'read' or 'not read' status
+    if (readToggle.checked === false) {
+      myLibrary[myLibrary.length - 1].read =
+        !myLibrary[myLibrary.length - 1].read;
+      cardContainer.style.cssText =
+        'background-image: linear-gradient(to right, #304352, #d7d2cc)';
+    } else {
+      myLibrary[myLibrary.length - 1].read =
+        !myLibrary[myLibrary.length - 1].read;
+      cardContainer.style.cssText =
+        'background-image: linear-gradient(to right, #134e5e, #71b280)';
+    }
+  });
 }
 
 addBooks.addEventListener('click', () => {
@@ -34,40 +107,4 @@ formCloseButton.addEventListener('click', () => {
   formContainer.style.cssText = 'display: none';
 });
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const bookDetails = [];
-
-  // turns the nodeList into an array and adds the values to bookDetails
-  [...inputs].forEach((input) => {
-    bookDetails.push(input.value);
-  });
-  // adds the value of the checkbox to bookDetails
-  if (checkbox.checked === true) {
-    bookDetails.push(true);
-  } else bookDetails.push(false);
-  // makes new Book object and adds to myLibrary
-  myLibrary.push(new Book(...bookDetails));
-  let myBook = new Book(...bookDetails);
-  // resets form
-  form.reset();
-  header.style = 'filter: blur(0px)';
-  formContainer.style.cssText = 'display: none';
-
-  let graphicBook = elementFromHtml(`
-     <div class="card-container">
-        <button class="close-button">✖</button>
-        <h4>${myBook.title}</h4>
-        <div class="author">By: ${myBook.author}</div>
-        <div class="pages">Number of pages: ${myBook.pages}</div>
-        <div class="language">Language: ${myBook.language}</div>
-        <div class="input-container">
-          <div>Mark as read: </div>
-          <input type="checkbox" id="switch" />
-          <label for="switch"></label>
-        </div>
-      </div>
-  `);
-
-  bookContainer.appendChild(graphicBook);
-});
+form.addEventListener('submit', (e) => addBookDomElement(e));
