@@ -13,12 +13,13 @@ function Book(title, author, pages, language, read) {
 }
 
 const addBooks = document.querySelector('.add-book button');
-const popUpContainer = document.createElement('div');
-popUpContainer.classList.add('pop-up-container');
 const header = document.querySelector('.header');
+const formContainer = document.querySelector('.form-container');
+const form = document.querySelector('form');
 
 addBooks.addEventListener('click', () => {
   header.style = "filter: blur(3px)";
-  document.body.insertBefore(popUpContainer, header);
+  formContainer.style.cssText = "display: block; ";
+  
 })
 
