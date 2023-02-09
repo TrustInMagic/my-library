@@ -16,6 +16,7 @@ const form = document.querySelector('form');
 const inputs = document.querySelectorAll('[type="text"], [type="number"]');
 const checkbox = document.querySelector('[type="checkbox"]');
 const bookContainer = document.querySelector('.book-container');
+const body = document.querySelector('body');
 
 // function that builds HTML elements
 function elementFromHtml(html) {
@@ -57,7 +58,7 @@ function addBookDomElement(e) {
   formContainer.style.cssText = 'display: none';
   // adds the book element to the DOM
   const graphicBook = elementFromHtml(`
-     <div class="card-container" style='${readStatusColor}'>
+     <div class="card-container" style='${readStatusColor}' data-number='${myLibrary.length}'>
         <button class="close-button">✖</button>
         <h4>${myBook.title}</h4>
         <div class="author">By: ${myBook.author}</div>
@@ -73,28 +74,45 @@ function addBookDomElement(e) {
 
   bookContainer.insertBefore(graphicBook, bookContainer.firstChild);
 
+  const cardContainer = document.querySelector('.card-container');
   const cardCloseButton = document.querySelector('.card-container button');
-  cardCloseButton.addEventListener('click', () => {
-    bookContainer.removeChild(bookContainer.firstElementChild);
-    myLibrary.pop();
+
+  cardCloseButton.addEventListener('click', (buttonEvent) => {
+    const bookToDelete = buttonEvent.target.parentNode;
+    bookContainer.removeChild(bookToDelete);
+    // removes the corresponding book object from myLibrary
+    myLibrary.splice(cardContainer.getAttribute('data-number') - 1, 1);
   });
 
-  const cardContainer = document.querySelector('.card-container');
   const readToggle = document.querySelector('.card-container input');
-  readToggle.addEventListener('click', () => {
-    // changes to color of the book DOM element corresponding to the 'read' or 'not read' status
+  readToggle.addEventListener('click', (buttonEvent) => {
+    // using data-number attribute (that is linked to myLibrary index of the books) to change the 'read or 'not read' status in myLibrary
+    const bookToEditDom = buttonEvent.target.parentNode.parentNode;
+    const bookToEditInLibrary =
+      myLibrary[bookToEditDom.getAttribute('data-number') - 1];
+    console.log(bookToEditInLibrary);
+    // changes to color of the book DOM element corresponding to the 'read' or 'not read' status and the status from myLibrary
     if (readToggle.checked === false) {
-      myLibrary[myLibrary.length - 1].read =
-        !myLibrary[myLibrary.length - 1].read;
+      bookToEditInLibrary.read = !bookToEditInLibrary.read;
       cardContainer.style.cssText =
         'background-image: linear-gradient(to right, #304352, #d7d2cc)';
     } else {
-      myLibrary[myLibrary.length - 1].read =
-        !myLibrary[myLibrary.length - 1].read;
+      bookToEditInLibrary.read = !bookToEditInLibrary.read;
       cardContainer.style.cssText =
         'background-image: linear-gradient(to right, #134e5e, #71b280)';
     }
   });
+}
+
+function updateLog() {
+  let totalBookCount = myLibrary.length;
+  let totalBooksRead = 0;
+  myLibrary.forEach(book => {
+    if (book.read === true) totalBooksRead += 1;
+  })
+  let totalBooksNotRead = totalBookCount - totalBooksRead;
+
+  return [totalBookCount, totalBooksRead, totalBooksNotRead]
 }
 
 addBooks.addEventListener('click', () => {
@@ -108,3 +126,8 @@ formCloseButton.addEventListener('click', () => {
 });
 
 form.addEventListener('submit', (e) => addBookDomElement(e));
+
+body.addEventListener('click', () => {
+  let logStatus = updateLog();
+  
+});

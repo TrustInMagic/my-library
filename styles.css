@@ -35,7 +35,6 @@ body {
   align-items: center;
   font-size: 1.2rem;
   border: green;
-
 }
 
 .header-container {
@@ -124,7 +123,7 @@ h3 {
 
 .add-book button:hover {
   transform: rotate(90deg);
-  transition: 0.3s
+  transition: 0.3s;
 }
 
 .pop-up-container {
@@ -153,8 +152,8 @@ form {
   border-radius: 8px;
 }
 
-form input[type="text"],
-form input[type="number"] {
+form input[type='text'],
+form input[type='number'] {
   appearance: none;
   font-family: inherit;
   font-size: 100%;
@@ -169,7 +168,7 @@ form input[type="number"] {
   outline: none;
 }
 
-form input[type="checkbox"] {
+form input[type='checkbox'] {
   cursor: pointer;
   opacity: 0;
   position: absolute;
@@ -192,7 +191,7 @@ h2 {
   display: flex;
 }
 
-form button[type="submit"] {
+form button[type='submit'] {
   width: 250px;
   height: 40px;
   border-radius: 10px;
@@ -203,24 +202,23 @@ form button[type="submit"] {
   cursor: pointer;
 }
 
-form button[type="submit"]:hover {
+form button[type='submit']:hover {
   background-color: #6ee7b7;
   transition: all 0.3s;
 }
 
-form input[type="text"]:hover,
-form input[type="number"]:hover {
+form input[type='text']:hover,
+form input[type='number']:hover {
   box-shadow: 1px 1px 10px #64748b;
   transition: all 0.2s;
 }
 
 form * {
   position: relative;
-  
 }
 
 input + div::before {
-  content: "*";
+  content: '*';
   position: absolute;
   color: red;
   bottom: 14px;
@@ -228,7 +226,7 @@ input + div::before {
 }
 
 .status label::after {
-  content: "";
+  content: '';
   width: 1rem;
   height: 1rem;
   border: 0.5px solid black;
@@ -240,7 +238,7 @@ input + div::before {
 }
 
 .status label::before {
-  content: "✓";
+  content: '✓';
   color: #047857;
   font-weight: 900;
   font-size: 1.7rem;
@@ -252,7 +250,7 @@ input + div::before {
   transition: all 0.3s;
 }
 
-form input[type="checkbox"]:checked + label::before {
+form input[type='checkbox']:checked + label::before {
   opacity: 1;
 }
 
@@ -271,7 +269,6 @@ form input[type="checkbox"]:checked + label::before {
   font-size: 1rem;
   background-color: #d1d5db;
   transition: all 0.3s;
-
 }
 
 .close-button:hover {
@@ -279,13 +276,11 @@ form input[type="checkbox"]:checked + label::before {
   transition: all 0.3s;
 }
 
-
 .form-container {
   display: none;
 }
 
-
-input[type=checkbox]{
+input[type='checkbox'] {
   display: none;
 }
 
@@ -333,11 +328,9 @@ input[type=checkbox]{
   grid-template-rows: 1fr 1fr 1fr;
   grid-auto-rows: 1fr;
   gap: 20px;
-
 }
 
 .card-container {
-
   max-width: 400px;
   color: white;
   border-radius: 10px;
@@ -356,7 +349,6 @@ input[type=checkbox]{
   align-items: center;
   font-size: 1rem;
   margin-top: auto;
-  
 }
 
 .card-container .close-button {
