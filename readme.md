@@ -1,6 +1,6 @@
 # my-library
 
-Live at:
+Live at: https://trustinmagic.github.io/my-library/
 
 Library created with HTML, CSS and JS
 
