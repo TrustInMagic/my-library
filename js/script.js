@@ -17,6 +17,10 @@ const inputs = document.querySelectorAll('[type="text"], [type="number"]');
 const checkbox = document.querySelector('[type="checkbox"]');
 const bookContainer = document.querySelector('.book-container');
 const body = document.querySelector('body');
+const totalBooksCount = document.querySelector('.total-books-count');
+const booksRead = document.querySelector('.read');
+const notRead = document.querySelector('.not-read');
+const button = document.querySelector('button');
 
 // function that builds HTML elements
 function elementFromHtml(html) {
@@ -33,7 +37,6 @@ function addBookDomElement(e) {
   [...inputs].forEach((input) => {
     bookDetails.push(input.value);
   });
-  // adds the value of the checkbox to bookDetails
   // I am using markRead variable to add checked or unchecked status on the toggle switch from the book DOM element (read/not read)
   // I am using readStatusColor variable to toggle the background color of the book DOM element
   let markRead;
@@ -52,7 +55,7 @@ function addBookDomElement(e) {
   // makes new Book object and adds to myLibrary
   myLibrary.push(new Book(...bookDetails));
   const myBook = new Book(...bookDetails);
-  // resets form
+  // resets form and clears it from DOM
   form.reset();
   header.style = 'filter: blur(0px)';
   formContainer.style.cssText = 'display: none';
@@ -90,7 +93,6 @@ function addBookDomElement(e) {
     const bookToEditDom = buttonEvent.target.parentNode.parentNode;
     const bookToEditInLibrary =
       myLibrary[bookToEditDom.getAttribute('data-number') - 1];
-    console.log(bookToEditInLibrary);
     // changes to color of the book DOM element corresponding to the 'read' or 'not read' status and the status from myLibrary
     if (readToggle.checked === false) {
       bookToEditInLibrary.read = !bookToEditInLibrary.read;
@@ -105,14 +107,14 @@ function addBookDomElement(e) {
 }
 
 function updateLog() {
-  let totalBookCount = myLibrary.length;
+  const totalBookCount = myLibrary.length;
   let totalBooksRead = 0;
-  myLibrary.forEach(book => {
+  myLibrary.forEach((book) => {
     if (book.read === true) totalBooksRead += 1;
-  })
-  let totalBooksNotRead = totalBookCount - totalBooksRead;
+  });
+  const totalBooksNotRead = totalBookCount - totalBooksRead;
 
-  return [totalBookCount, totalBooksRead, totalBooksNotRead]
+  return [totalBookCount, totalBooksRead, totalBooksNotRead];
 }
 
 addBooks.addEventListener('click', () => {
@@ -127,7 +129,11 @@ formCloseButton.addEventListener('click', () => {
 
 form.addEventListener('submit', (e) => addBookDomElement(e));
 
-body.addEventListener('click', () => {
-  let logStatus = updateLog();
-  
-});
+[body, button].forEach(element => element.addEventListener('click', () => {
+  const logStatus = updateLog();
+  console.log(logStatus);
+  console.log(myLibrary)
+  totalBooksCount.innerHTML = logStatus[0];
+  booksRead.innerHTML = logStatus[1];
+  notRead.innerHTML = logStatus[2];
+}));
