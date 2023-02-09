@@ -20,7 +20,6 @@ const body = document.querySelector('body');
 const totalBooksCount = document.querySelector('.total-books-count');
 const booksRead = document.querySelector('.read');
 const notRead = document.querySelector('.not-read');
-const button = document.querySelector('button');
 
 // function that builds HTML elements
 function elementFromHtml(html) {
@@ -31,6 +30,7 @@ function elementFromHtml(html) {
 
 function addBookDomElement(e) {
   e.preventDefault();
+  bookContainer.style = 'filter: blur(0px)';
   const bookDetails = [];
 
   // turns the nodeList into an array and adds the values to bookDetails
@@ -55,13 +55,20 @@ function addBookDomElement(e) {
   // makes new Book object and adds to myLibrary
   myLibrary.push(new Book(...bookDetails));
   const myBook = new Book(...bookDetails);
+
+  myLibrary.forEach((book) => {
+    book.idNumber = myLibrary.indexOf(book);
+  });
+
   // resets form and clears it from DOM
   form.reset();
   header.style = 'filter: blur(0px)';
   formContainer.style.cssText = 'display: none';
   // adds the book element to the DOM
   const graphicBook = elementFromHtml(`
-     <div class="card-container" style='${readStatusColor}' data-number='${myLibrary.length}'>
+     <div class="card-container" style='${readStatusColor}' data-number='${
+    myLibrary.length - 1
+  }'>
         <button class="close-button">✖</button>
         <h4>${myBook.title}</h4>
         <div class="author">By: ${myBook.author}</div>
@@ -84,15 +91,27 @@ function addBookDomElement(e) {
     const bookToDelete = buttonEvent.target.parentNode;
     bookContainer.removeChild(bookToDelete);
     // removes the corresponding book object from myLibrary
-    myLibrary.splice(cardContainer.getAttribute('data-number') - 1, 1);
+    const bookIdNumberToRemove = cardContainer.getAttribute('data-number');
+    let indexOfBookToRemove;
+    myLibrary.forEach((book) => {
+      if (book.idNumber === +bookIdNumberToRemove) {
+        indexOfBookToRemove = myLibrary.indexOf(book);
+      }
+    });
+    myLibrary.splice(indexOfBookToRemove, 1);
   });
 
   const readToggle = document.querySelector('.card-container input');
   readToggle.addEventListener('click', (buttonEvent) => {
     // using data-number attribute (that is linked to myLibrary index of the books) to change the 'read or 'not read' status in myLibrary
     const bookToEditDom = buttonEvent.target.parentNode.parentNode;
-    const bookToEditInLibrary =
-      myLibrary[bookToEditDom.getAttribute('data-number') - 1];
+    const bookIdNumberToEdit = bookToEditDom.getAttribute('data-number');
+    let bookToEditInLibrary;
+    myLibrary.forEach((book) => {
+      if (book.idNumber === +bookIdNumberToEdit) {
+        bookToEditInLibrary = book;
+      }
+    });
     // changes to color of the book DOM element corresponding to the 'read' or 'not read' status and the status from myLibrary
     if (readToggle.checked === false) {
       bookToEditInLibrary.read = !bookToEditInLibrary.read;
@@ -119,21 +138,28 @@ function updateLog() {
 
 addBooks.addEventListener('click', () => {
   header.style = 'filter: blur(3px)';
+  bookContainer.style = 'filter: blur(3px)';
   formContainer.style.cssText = 'display: block';
 });
 
 formCloseButton.addEventListener('click', () => {
   header.style = 'filter: blur(0px)';
+  bookContainer.style = 'filter: blur(0px)';
   formContainer.style.cssText = 'display: none';
 });
 
 form.addEventListener('submit', (e) => addBookDomElement(e));
 
-[body, button].forEach(element => element.addEventListener('click', () => {
+body.addEventListener('click', () => {
   const logStatus = updateLog();
-  console.log(logStatus);
-  console.log(myLibrary)
   totalBooksCount.innerHTML = logStatus[0];
   booksRead.innerHTML = logStatus[1];
   notRead.innerHTML = logStatus[2];
-}));
+});
+
+form.addEventListener('submit', () => {
+  const logStatus = updateLog();
+  totalBooksCount.innerHTML = logStatus[0];
+  booksRead.innerHTML = logStatus[1];
+  notRead.innerHTML = logStatus[2];
+});
