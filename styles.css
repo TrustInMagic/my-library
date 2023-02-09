@@ -332,6 +332,7 @@ input[type='checkbox'] {
 
 .card-container {
   max-width: 400px;
+  max-height: 250px;
   color: white;
   border-radius: 10px;
   box-shadow: 2px 2px 50px #94a3b8;
